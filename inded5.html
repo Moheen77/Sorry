@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I'm Sorry ❤️</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    background: url('bg.jpg') no-repeat center center/cover;
+}
+
+/* MAIN SCREEN */
+#main {
+    background: rgba(0,0,0,0.6);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* TEXT */
+h1, h2 {
+    color: white;
+    margin: 10px;
+}
+
+#typing {
+    color: #ffccd5;
+    font-size: 24px;
+    height: 30px;
+}
+
+/* BUTTON CONTAINER */
+.buttons {
+    margin-top: 50px;
+    position: relative;
+}
+
+/* HEART BUTTON (CLEAN FIX) */
+.heart {
+    width: 120px;
+    height: 110px;
+    position: absolute;
+    background: red;
+    transform: rotate(-45deg);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* HEART CIRCLES */
+.heart::before,
+.heart::after {
+    content: "";
+    width: 120px;
+    height: 110px;
+    position: absolute;
+    background: inherit;
+    border-radius: 50%;
+}
+
+.heart::before {
+    top: -60px;
+    left: 0;
+}
+
+.heart::after {
+    left: 60px;
+    top: 0;
+}
+
+/* TEXT FIX */
+.heart span {
+    transform: rotate(45deg);
+    font-size: 20px;
+    font-weight: bold;
+    z-index: 2;
+}
+
+/* COLORS */
+.yes {
+    background: #ff4d6d;
+    left: -150px;
+}
+
+.no {
+    background: #6c757d;
+    left: 150px;
+}
+
+/* RESULT SCREEN */
+#resultScreen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: black;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* IMAGE */
+.photoBox {
+    position: relative;
+}
+
+.photoBox img {
+    width: 280px;
+    border-radius: 20px;
+    animation: zoom 1s ease;
+}
+
+/* CROWN */
+.crown {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+}
+
+/* FINAL TEXT */
+#finalText {
+    color: white;
+    margin-top: 20px;
+    font-size: 24px;
+}
+
+/* ANIMATION */
+@keyframes zoom {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+</style>
+</head>
+
+<body>
+
+<div id="main">
+    <h1>I'M SORRY</h1>
+    <h2>WILL U ACCEPT MY APOLOGY</h2>
+    <h2 id="typing"></h2>
+
+    <div class="buttons">
+        <div class="heart yes" onclick="accept()"><span>YES</span></div>
+        <div class="heart no" id="noBtn"><span>NO</span></div>
+    </div>
+</div>
+
+<div id="resultScreen">
+    <div class="photoBox">
+        <div class="crown">👑</div>
+        <img src="us2.jpg">
+    </div>
+    <div id="finalText"></div>
+</div>
+
+<script>
+/* SMOOTH NO */
+const noBtn = document.getElementById("noBtn");
+
+document.addEventListener("mousemove", (e) => {
+    const rect = noBtn.getBoundingClientRect();
+    const dx = e.clientX - (rect.left + rect.width/2);
+    const dy = e.clientY - (rect.top + rect.height/2);
+    const dist = Math.sqrt(dx*dx + dy*dy);
+
+    if (dist < 120) {
+        noBtn.style.transition = "all 0.4s ease";
+        noBtn.style.left = (Math.random() * 300 - 150) + "px";
+        noBtn.style.top = (Math.random() * 200 - 100) + "px";
+    }
+});
+
+/* YES */
+function accept() {
+    document.getElementById("main").style.display = "none";
+    document.getElementById("resultScreen").style.display = "flex";
+
+    confetti({
+        particleCount: 250,
+        spread: 140,
+        origin: { y: 0.6 }
+    });
+
+    startFinalTyping();
+}
+
+/* TYPING 1 */
+const text = "I MISS YOU";
+let i = 0;
+
+function typing() {
+    if (i < text.length) {
+        document.getElementById("typing").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typing, 120);
+    }
+}
+
+window.onload = () => {
+    setTimeout(typing, 800);
+};
+
+/* FINAL TEXT */
+const finalMsg = "WE ARE GOING TO GET MARRIED BABE 💌";
+let j = 0;
+
+function startFinalTyping() {
+    function type2() {
+        if (j < finalMsg.length) {
+            document.getElementById("finalText").innerHTML += finalMsg.charAt(j);
+            j++;
+            setTimeout(type2, 100);
+        }
+    }
+    type2();
+}
+</script>
+
+</body>
+</html>
